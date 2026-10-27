@@ -1,0 +1,29 @@
+from enum import Enum
+
+
+class UserRole(str, Enum):
+    BUYER = "BUYER"
+    SUPPLIER = "SUPPLIER"
+    ADMIN = "ADMIN"
+
+
+class AuctionStatus(str, Enum):
+    DRAFT = "DRAFT"
+    SCHEDULED = "SCHEDULED"
+    ACTIVE = "ACTIVE"
+    CLOSED = "CLOSED"
+    FORCE_CLOSED = "FORCE_CLOSED"
+
+
+class ExtensionTriggerMode(str, Enum):
+    BID_RECEIVED = "BID_RECEIVED"
+    ANY_RANK_CHANGE = "ANY_RANK_CHANGE"
+    L1_RANK_CHANGE = "L1_RANK_CHANGE"
+
+
+class ActivityType(str, Enum):
+    AUCTION_CREATED = "AUCTION_CREATED"
+    BID_SUBMITTED = "BID_SUBMITTED"
+    EXTENSION_TRIGGERED = "EXTENSION_TRIGGERED"
+    STATUS_CHANGED = "STATUS_CHANGED"
+    FORCED_CLOSE_TRIGGERED = "FORCED_CLOSE_TRIGGERED"

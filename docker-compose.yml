@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: rfq_british_auction_db
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER:-rfq_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-rfq_password}
+      POSTGRES_DB: ${DB_NAME:-rfq_auction_db}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - rfq_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-rfq_user} -d ${DB_NAME:-rfq_auction_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  rfq_pgdata:

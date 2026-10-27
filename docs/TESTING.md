@@ -20,7 +20,7 @@ source .venv/bin/activate
 pytest -v
 ```
 
-### 2.2 Frontend Playwright E2E Suite (8 Tests)
+### 2.2 Frontend Playwright E2E Suite (12 Tests)
 ```bash
 # Ensure backend is running on port 8000
 cd backend

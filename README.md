@@ -5,7 +5,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.8-3178C6.svg?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1.svg?style=flat-square&logo=postgresql&logoColor=white)](https://www.postgresql.org)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38B2AC.svg?style=flat-square&logo=tailwind-css&logoColor=white)](https://tailwindcss.com)
-[![Playwright](https://img.shields.io/badge/Playwright-8_Passed-2EAD33.svg?style=flat-square&logo=playwright&logoColor=white)](https://playwright.dev)
+[![Playwright](https://img.shields.io/badge/Playwright-12_Passed-2EAD33.svg?style=flat-square&logo=playwright&logoColor=white)](https://playwright.dev)
 [![Pytest](https://img.shields.io/badge/Pytest-29_Passed-0A9EDC.svg?style=flat-square&logo=pytest&logoColor=white)](https://pytest.org)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
 

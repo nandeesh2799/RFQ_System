@@ -80,38 +80,45 @@ export const BidSubmissionModal: React.FC<BidModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-      <div className="bg-white w-full max-w-lg rounded-2xl border border-slate-200 shadow-xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
+      <div className="bg-white w-full max-w-lg rounded-xl border border-slate-200 shadow-xl overflow-hidden">
         {/* Header */}
         <div className="px-6 py-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
           <div>
             <h3 className="text-base font-bold text-slate-900">Submit Quotation / Bid</h3>
             <p className="text-xs text-slate-500">Compete in British Auction by offering lower total charges.</p>
           </div>
-          <button onClick={onClose} className="p-1 rounded-md text-slate-400 hover:text-slate-600">
+          <button
+            onClick={onClose}
+            className="p-1 rounded-md text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition"
+          >
             <X className="h-5 w-5" />
           </button>
         </div>
 
         {/* Alerts / Context */}
-        <div className="px-6 pt-4 space-y-3">
+        <div className="px-6 pt-4 space-y-2.5">
           {currentLowestBid && (
-            <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-lg text-xs text-emerald-900 flex items-center justify-between">
-              <span>Current Auction Low (L1):</span>
-              <strong className="font-mono text-sm">${Number(currentLowestBid).toFixed(2)}</strong>
+            <div className="p-3 bg-emerald-50/70 border border-emerald-200 rounded-lg text-xs text-emerald-900 flex items-center justify-between">
+              <span className="font-medium">Current Auction Low (L1):</span>
+              <strong className="font-mono text-sm text-emerald-800">
+                ${Number(currentLowestBid).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </strong>
             </div>
           )}
 
           {supplierCurrentBest && (
-            <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-900 flex items-center justify-between">
-              <span>Your Current Best Quote:</span>
-              <strong className="font-mono text-sm">${Number(supplierCurrentBest).toFixed(2)}</strong>
+            <div className="p-3 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-700 flex items-center justify-between">
+              <span className="font-medium">Your Current Best Quote:</span>
+              <strong className="font-mono text-sm text-slate-900">
+                ${Number(supplierCurrentBest).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </strong>
             </div>
           )}
 
           {serverError && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-xs text-red-800 flex items-center gap-2">
-              <AlertCircle className="h-4 w-4 text-red-600 shrink-0" />
+            <div className="p-3 bg-rose-50 border border-rose-200 rounded-lg text-xs text-rose-800 flex items-center gap-2">
+              <AlertCircle className="h-4 w-4 text-rose-600 shrink-0" />
               <span>{serverError}</span>
             </div>
           )}
@@ -125,9 +132,9 @@ export const BidSubmissionModal: React.FC<BidModalProps> = ({
             <input
               type="text"
               {...register("carrier_name")}
-              className="w-full text-xs px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white"
+              className="w-full text-xs px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-slate-900 focus:bg-white"
             />
-            {errors.carrier_name && <p className="text-xs text-red-600 mt-1">{errors.carrier_name.message}</p>}
+            {errors.carrier_name && <p className="text-xs text-rose-600 mt-1">{errors.carrier_name.message}</p>}
           </div>
 
           <div className="grid grid-cols-3 gap-3">
@@ -139,9 +146,9 @@ export const BidSubmissionModal: React.FC<BidModalProps> = ({
                 type="number"
                 step="0.01"
                 {...register("freight_charges")}
-                className="w-full text-xs font-mono px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white"
+                className="w-full text-xs font-mono px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-slate-900 focus:bg-white"
               />
-              {errors.freight_charges && <p className="text-[10px] text-red-600 mt-1">{errors.freight_charges.message}</p>}
+              {errors.freight_charges && <p className="text-[10px] text-rose-600 mt-1">{errors.freight_charges.message}</p>}
             </div>
 
             <div>
@@ -152,9 +159,9 @@ export const BidSubmissionModal: React.FC<BidModalProps> = ({
                 type="number"
                 step="0.01"
                 {...register("origin_charges")}
-                className="w-full text-xs font-mono px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white"
+                className="w-full text-xs font-mono px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-slate-900 focus:bg-white"
               />
-              {errors.origin_charges && <p className="text-[10px] text-red-600 mt-1">{errors.origin_charges.message}</p>}
+              {errors.origin_charges && <p className="text-[10px] text-rose-600 mt-1">{errors.origin_charges.message}</p>}
             </div>
 
             <div>
@@ -165,23 +172,25 @@ export const BidSubmissionModal: React.FC<BidModalProps> = ({
                 type="number"
                 step="0.01"
                 {...register("destination_charges")}
-                className="w-full text-xs font-mono px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white"
+                className="w-full text-xs font-mono px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-slate-900 focus:bg-white"
               />
-              {errors.destination_charges && <p className="text-[10px] text-red-600 mt-1">{errors.destination_charges.message}</p>}
+              {errors.destination_charges && <p className="text-[10px] text-rose-600 mt-1">{errors.destination_charges.message}</p>}
             </div>
           </div>
 
           {/* Calculated Total Bar */}
-          <div className="p-3.5 bg-slate-900 text-white rounded-xl flex items-center justify-between shadow-xs">
+          <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <Calculator className="h-4 w-4 text-indigo-400" />
-              <span className="text-xs uppercase font-bold tracking-wider text-slate-300">Total Quote Amount:</span>
+              <Calculator className="h-4 w-4 text-slate-500" />
+              <div>
+                <span className="text-xs uppercase font-bold tracking-wider text-slate-700 block">Total Quote Amount:</span>
+                <span className="text-[10px] text-slate-400">Freight + Origin + Destination</span>
+              </div>
             </div>
             <div className="text-right">
-              <span className="text-xl font-extrabold text-emerald-400 font-mono-num">
+              <span className="text-xl font-bold text-slate-900 font-mono-num">
                 ${calculatedTotal.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </span>
-              <p className="text-[10px] text-slate-400">freight + origin + destination</p>
             </div>
           </div>
 
@@ -194,9 +203,9 @@ export const BidSubmissionModal: React.FC<BidModalProps> = ({
                 type="number"
                 min="1"
                 {...register("transit_time_days")}
-                className="w-full text-xs font-mono px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white"
+                className="w-full text-xs font-mono px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-slate-900 focus:bg-white"
               />
-              {errors.transit_time_days && <p className="text-xs text-red-600 mt-1">{errors.transit_time_days.message}</p>}
+              {errors.transit_time_days && <p className="text-xs text-rose-600 mt-1">{errors.transit_time_days.message}</p>}
             </div>
 
             <div>
@@ -206,9 +215,9 @@ export const BidSubmissionModal: React.FC<BidModalProps> = ({
               <input
                 type="date"
                 {...register("quote_validity_date")}
-                className="w-full text-xs px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white"
+                className="w-full text-xs px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-slate-900 focus:bg-white"
               />
-              {errors.quote_validity_date && <p className="text-xs text-red-600 mt-1">{errors.quote_validity_date.message}</p>}
+              {errors.quote_validity_date && <p className="text-xs text-rose-600 mt-1">{errors.quote_validity_date.message}</p>}
             </div>
           </div>
 
@@ -220,15 +229,15 @@ export const BidSubmissionModal: React.FC<BidModalProps> = ({
               rows={2}
               {...register("notes")}
               placeholder="Vessel routing, transshipment details, container equipment..."
-              className="w-full text-xs px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white"
+              className="w-full text-xs px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-slate-900 focus:bg-white"
             />
           </div>
 
-          <div className="flex justify-end space-x-2 pt-2">
+          <div className="flex justify-end space-x-2 pt-2 border-t border-slate-100">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 border border-slate-200 text-slate-700 rounded-lg text-xs font-medium hover:bg-slate-50 transition"
+              className="px-4 py-2 border border-slate-200 text-slate-700 rounded-lg text-xs font-semibold hover:bg-slate-50 transition"
             >
               Cancel
             </button>

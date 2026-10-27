@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Clock, AlertTriangle } from "lucide-react";
+import { Clock, AlertCircle } from "lucide-react";
 
 interface CountdownProps {
   targetDate: string;
@@ -48,46 +48,63 @@ export const Countdown: React.FC<CountdownProps> = ({
   const isExpired = timeLeft.totalSeconds <= 0;
 
   return (
-    <div className={`p-4 rounded-xl border transition-all ${
-      isExpired
-        ? "bg-slate-50 border-slate-200 text-slate-500"
-        : isInTriggerWindow
-        ? "bg-amber-50/80 border-amber-300 text-amber-900 shadow-sm"
-        : "bg-white border-slate-200 text-slate-800 shadow-xs"
-    }`}>
-      <div className="flex items-center justify-between mb-2">
+    <div
+      className={`p-4 rounded-xl border transition-colors ${
+        isExpired
+          ? "bg-slate-50 border-slate-200 text-slate-500"
+          : isInTriggerWindow
+          ? "bg-amber-50/70 border-amber-300 text-amber-950"
+          : "bg-white border-slate-200 text-slate-800 shadow-xs"
+      }`}
+    >
+      <div className="flex items-center justify-between mb-3">
         <span className="text-xs font-semibold uppercase tracking-wider flex items-center gap-1.5">
-          <Clock className={`h-4 w-4 ${isInTriggerWindow ? "text-amber-600 animate-spin" : "text-slate-400"}`} />
-          {isExpired ? "Auction Concluded" : isInTriggerWindow ? "⚡ Trigger Window Active" : "Time Remaining"}
+          <Clock
+            className={`h-4 w-4 ${
+              isInTriggerWindow ? "text-amber-700" : isExpired ? "text-slate-400" : "text-slate-500"
+            }`}
+          />
+          <span>{isExpired ? "Auction Concluded" : isInTriggerWindow ? "⚡ Trigger Window Active" : "Time Remaining"}</span>
         </span>
         {isInTriggerWindow && (
-          <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-amber-200 text-amber-900">
+          <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-amber-200 text-amber-900 border border-amber-300">
             Last {triggerWindowMinutes}m
           </span>
         )}
       </div>
 
-      <div className="flex items-baseline space-x-2 font-mono-num">
-        <div className="flex flex-col items-center">
-          <span className="text-3xl font-extrabold">{String(timeLeft.hours).padStart(2, "0")}</span>
-          <span className="text-[10px] text-slate-400 uppercase font-semibold">Hours</span>
+      <div className="flex items-center justify-center space-x-3 py-1 font-mono-num">
+        <div className="flex flex-col items-center bg-slate-50/80 px-3 py-2 rounded-lg border border-slate-200/80 min-w-[56px]">
+          <span className="text-2xl font-bold tracking-tight text-slate-900">
+            {String(timeLeft.hours).padStart(2, "0")}
+          </span>
+          <span className="text-[10px] text-slate-500 uppercase font-medium">Hours</span>
         </div>
-        <span className="text-2xl font-light text-slate-400">:</span>
-        <div className="flex flex-col items-center">
-          <span className="text-3xl font-extrabold">{String(timeLeft.minutes).padStart(2, "0")}</span>
-          <span className="text-[10px] text-slate-400 uppercase font-semibold">Min</span>
+        <span className="text-xl font-semibold text-slate-400">:</span>
+        <div className="flex flex-col items-center bg-slate-50/80 px-3 py-2 rounded-lg border border-slate-200/80 min-w-[56px]">
+          <span className="text-2xl font-bold tracking-tight text-slate-900">
+            {String(timeLeft.minutes).padStart(2, "0")}
+          </span>
+          <span className="text-[10px] text-slate-500 uppercase font-medium">Min</span>
         </div>
-        <span className="text-2xl font-light text-slate-400">:</span>
-        <div className="flex flex-col items-center">
-          <span className="text-3xl font-extrabold">{String(timeLeft.seconds).padStart(2, "0")}</span>
-          <span className="text-[10px] text-slate-400 uppercase font-semibold">Sec</span>
+        <span className="text-xl font-semibold text-slate-400">:</span>
+        <div className="flex flex-col items-center bg-slate-50/80 px-3 py-2 rounded-lg border border-slate-200/80 min-w-[56px]">
+          <span className="text-2xl font-bold tracking-tight text-slate-900">
+            {String(timeLeft.seconds).padStart(2, "0")}
+          </span>
+          <span className="text-[10px] text-slate-500 uppercase font-medium">Sec</span>
         </div>
       </div>
 
       {forcedCloseDate && (
-        <div className="mt-3 pt-2.5 border-t border-slate-200/60 flex items-center text-xs text-slate-500 gap-1.5">
-          <AlertTriangle className="h-3.5 w-3.5 text-slate-400 shrink-0" />
-          <span>Hard cutoff: <strong className="font-semibold text-slate-700">{new Date(forcedCloseDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</strong></span>
+        <div className="mt-3 pt-2.5 border-t border-slate-200 flex items-center text-xs text-slate-600 gap-1.5">
+          <AlertCircle className="h-3.5 w-3.5 text-slate-400 shrink-0" />
+          <span>
+            Hard cutoff:{" "}
+            <strong className="font-semibold text-slate-800">
+              {new Date(forcedCloseDate).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+            </strong>
+          </span>
         </div>
       )}
     </div>

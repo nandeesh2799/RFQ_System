@@ -9,32 +9,35 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
   switch (status) {
     case "ACTIVE":
       return (
-        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-          <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 mr-1.5 animate-pulse" />
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+          <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" />
           Active
         </span>
       );
     case "FORCE_CLOSED":
       return (
-        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-purple-50 text-purple-700 border border-purple-200">
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-purple-50 text-purple-700 border border-purple-200">
+          <span className="h-1.5 w-1.5 rounded-full bg-purple-600" />
           Force Closed
         </span>
       );
     case "CLOSED":
       return (
-        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200">
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-300">
+          <span className="h-1.5 w-1.5 rounded-full bg-slate-500" />
           Closed
         </span>
       );
     case "SCHEDULED":
       return (
-        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200">
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-sky-50 text-sky-700 border border-sky-200">
+          <span className="h-1.5 w-1.5 rounded-full bg-sky-600" />
           Scheduled
         </span>
       );
     default:
       return (
-        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-600">
+        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-600 border border-slate-200">
           {status}
         </span>
       );
@@ -49,13 +52,13 @@ export const TriggerModeBadge: React.FC<TriggerModeBadgeProps> = ({ mode }) => {
   switch (mode) {
     case "BID_RECEIVED":
       return (
-        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-sky-50 text-sky-800 border border-sky-200" title="Extends if any bid is placed in trigger window">
+        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-700 border border-slate-200" title="Extends if any bid is placed in trigger window">
           Mode 1: Any Bid Received
         </span>
       );
     case "ANY_RANK_CHANGE":
       return (
-        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-50 text-indigo-800 border border-indigo-200" title="Extends if any supplier rank changes in trigger window">
+        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-50 text-indigo-700 border border-indigo-200" title="Extends if any supplier rank changes in trigger window">
           Mode 2: Any Rank Change
         </span>
       );

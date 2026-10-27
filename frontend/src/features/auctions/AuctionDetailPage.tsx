@@ -46,7 +46,6 @@ export const AuctionDetailPage: React.FC = () => {
 
   useEffect(() => {
     fetchDetail();
-    // Connect WebSocket for live updates
     const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
     const wsUrl = `${protocol}//${window.location.host}/ws/auctions/${rfqId}`;
     let ws: WebSocket | null = null;
@@ -72,18 +71,21 @@ export const AuctionDetailPage: React.FC = () => {
   if (loading) {
     return (
       <div className="py-24 text-center">
-        <div className="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-        <p className="text-sm text-slate-500">Loading British Auction Details...</p>
+        <div className="w-6 h-6 border-2 border-slate-900 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+        <p className="text-xs text-slate-500 font-medium">Loading British Auction Details...</p>
       </div>
     );
   }
 
   if (error || !detail) {
     return (
-      <div className="max-w-xl mx-auto my-12 p-6 bg-red-50 border border-red-200 rounded-xl text-center">
-        <p className="text-sm font-semibold text-red-800">Failed to load auction details</p>
-        <p className="text-xs text-red-600 mt-1">{error}</p>
-        <Link to="/auctions" className="mt-4 inline-block px-4 py-2 bg-slate-800 text-white text-xs font-semibold rounded-lg">
+      <div className="max-w-xl mx-auto my-12 p-6 bg-rose-50 border border-rose-200 rounded-xl text-center">
+        <p className="text-sm font-semibold text-rose-800">Failed to load auction details</p>
+        <p className="text-xs text-rose-600 mt-1">{error}</p>
+        <Link
+          to="/auctions"
+          className="mt-4 inline-block px-4 py-2 bg-slate-900 text-white text-xs font-semibold rounded-lg hover:bg-slate-800 transition"
+        >
           Back to Auctions
         </Link>
       </div>
@@ -92,25 +94,30 @@ export const AuctionDetailPage: React.FC = () => {
 
   const isAuctionActive = detail.status === "ACTIVE";
   const isSupplier = currentUserEmail !== "buyer@acme.corp";
-  const supplierRank = detail.rankings.find((r) => r.company_name.toLowerCase().includes(currentUserEmail.split("@")[0].toLowerCase()));
+  const supplierRank = detail.rankings.find((r) =>
+    r.company_name.toLowerCase().includes(currentUserEmail.split("@")[0].toLowerCase())
+  );
 
   return (
     <div className="space-y-6">
-      {/* Top Breadcrumb & Action Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      {/* Top Header */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-2 border-b border-slate-200">
         <div className="flex items-center space-x-3">
-          <Link to="/auctions" className="p-2 rounded-lg bg-white border border-slate-200 text-slate-500 hover:text-slate-800 transition">
+          <Link
+            to="/auctions"
+            className="p-1.5 rounded-lg bg-white border border-slate-200 text-slate-500 hover:text-slate-900 hover:bg-slate-50 transition"
+          >
             <ArrowLeft className="h-4 w-4" />
           </Link>
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-mono text-xs font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-800">
+              <span className="font-mono text-[11px] font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200">
                 {detail.reference_id}
               </span>
               <StatusBadge status={detail.status} />
               <TriggerModeBadge mode={detail.extension_trigger_mode} />
             </div>
-            <h1 className="text-2xl font-bold text-slate-900 tracking-tight mt-1">{detail.title}</h1>
+            <h1 className="text-xl font-bold text-slate-900 tracking-tight mt-1">{detail.title}</h1>
           </div>
         </div>
 
@@ -118,47 +125,51 @@ export const AuctionDetailPage: React.FC = () => {
         {isAuctionActive && isSupplier && (
           <button
             onClick={() => setModalOpen(true)}
-            className="inline-flex items-center space-x-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold rounded-xl shadow-xs transition"
+            className="inline-flex items-center space-x-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-lg shadow-xs transition"
           >
-            <Send className="h-4 w-4" />
+            <Send className="h-3.5 w-3.5" />
             <span>Submit / Lower Quote</span>
           </button>
         )}
       </div>
 
-      {/* Forced Close Alert Banner if reached */}
+      {/* Forced Close Alert Banner */}
       {detail.has_reached_forced_close && (
-        <div className="p-4 bg-purple-50 border border-purple-200 rounded-xl flex items-center gap-3 text-purple-900 text-sm">
-          <AlertTriangle className="h-5 w-5 text-purple-600 shrink-0" />
+        <div className="p-3.5 bg-purple-50 border border-purple-200 rounded-xl flex items-center gap-3 text-purple-900 text-xs">
+          <AlertTriangle className="h-4 w-4 text-purple-700 shrink-0" />
           <div>
-            <strong className="font-semibold">Auction Has Reached Forced Close Deadline ({new Date(detail.forced_close_time).toLocaleTimeString()}):</strong>
-            <span className="text-purple-700 ml-1">No further time extensions can occur regardless of bidding activity.</span>
+            <strong className="font-semibold">
+              Auction Has Reached Forced Close Deadline ({new Date(detail.forced_close_time).toLocaleTimeString()}):
+            </strong>
+            <span className="text-purple-800 ml-1">
+              No further time extensions can occur regardless of bidding activity.
+            </span>
           </div>
         </div>
       )}
 
       {/* Main Grid: Info + Live Countdown */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         {/* Left 2 Cols: Cargo & Auction Rules */}
         <div className="lg:col-span-2 space-y-4">
           {/* Cargo Specs */}
           <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs space-y-3">
-            <h2 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-              <Package className="h-4 w-4 text-indigo-600" />
+            <h2 className="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
+              <Package className="h-4 w-4 text-slate-600" />
               Shipment Specifications
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
-              <div className="bg-slate-50 p-3 rounded-lg">
+              <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
                 <span className="text-slate-400 font-semibold block text-[10px] uppercase">Routing</span>
-                <span className="font-semibold text-slate-800 mt-0.5 block">{detail.origin} → {detail.destination}</span>
+                <span className="font-semibold text-slate-900 mt-0.5 block">{detail.origin} → {detail.destination}</span>
               </div>
-              <div className="bg-slate-50 p-3 rounded-lg">
+              <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
                 <span className="text-slate-400 font-semibold block text-[10px] uppercase">Service / Pickup Date</span>
-                <span className="font-semibold text-slate-800 mt-0.5 block">{detail.pickup_date}</span>
+                <span className="font-semibold text-slate-900 mt-0.5 block">{detail.pickup_date}</span>
               </div>
-              <div className="bg-slate-50 p-3 rounded-lg sm:col-span-1 col-span-2">
+              <div className="bg-slate-50 p-3 rounded-lg border border-slate-100 sm:col-span-1 col-span-2">
                 <span className="text-slate-400 font-semibold block text-[10px] uppercase">Cargo Details</span>
-                <span className="font-semibold text-slate-800 mt-0.5 block">{detail.cargo_details}</span>
+                <span className="font-semibold text-slate-900 mt-0.5 block">{detail.cargo_details}</span>
               </div>
             </div>
             {detail.description && (
@@ -168,25 +179,25 @@ export const AuctionDetailPage: React.FC = () => {
 
           {/* British Auction Config Breakdown */}
           <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs space-y-3">
-            <h2 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-              <Gavel className="h-4 w-4 text-indigo-600" />
+            <h2 className="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
+              <Gavel className="h-4 w-4 text-slate-600" />
               British Auction Extension Mechanics
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-              <div className="border border-slate-200 p-3 rounded-lg">
-                <span className="text-slate-400 font-semibold block text-[10px] uppercase">Trigger Window (X)</span>
-                <span className="text-base font-bold text-indigo-700 font-mono-num">{detail.trigger_window_minutes} Minutes</span>
+              <div className="border border-slate-200 p-3 rounded-lg bg-slate-50/50">
+                <span className="text-slate-500 font-medium block text-[10px] uppercase tracking-wider">Trigger Window (X)</span>
+                <span className="text-base font-bold text-slate-900 font-mono-num mt-0.5 block">{detail.trigger_window_minutes} Minutes</span>
                 <p className="text-[10px] text-slate-400 mt-1">Monitors bids before close</p>
               </div>
-              <div className="border border-slate-200 p-3 rounded-lg">
-                <span className="text-slate-400 font-semibold block text-[10px] uppercase">Extension Duration (Y)</span>
-                <span className="text-base font-bold text-indigo-700 font-mono-num">+{detail.extension_duration_minutes} Minutes</span>
+              <div className="border border-slate-200 p-3 rounded-lg bg-slate-50/50">
+                <span className="text-slate-500 font-medium block text-[10px] uppercase tracking-wider">Extension Duration (Y)</span>
+                <span className="text-base font-bold text-slate-900 font-mono-num mt-0.5 block">+{detail.extension_duration_minutes} Minutes</span>
                 <p className="text-[10px] text-slate-400 mt-1">Added per qualified trigger</p>
               </div>
-              <div className="border border-slate-200 p-3 rounded-lg">
-                <span className="text-slate-400 font-semibold block text-[10px] uppercase">Forced Close Deadline</span>
-                <span className="text-base font-bold text-purple-800 font-mono-num">
-                  {new Date(detail.forced_close_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+              <div className="border border-slate-200 p-3 rounded-lg bg-slate-50/50">
+                <span className="text-slate-500 font-medium block text-[10px] uppercase tracking-wider">Forced Close Deadline</span>
+                <span className="text-base font-bold text-purple-900 font-mono-num mt-0.5 block">
+                  {new Date(detail.forced_close_time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                 </span>
                 <p className="text-[10px] text-slate-400 mt-1">Absolute termination limit</p>
               </div>
@@ -204,22 +215,22 @@ export const AuctionDetailPage: React.FC = () => {
 
           {/* Current Leading L1 Quote */}
           <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs">
-            <span className="text-xs uppercase font-semibold text-slate-400 flex items-center gap-1.5">
+            <span className="text-xs uppercase font-semibold text-slate-500 flex items-center gap-1.5">
               <TrendingDown className="h-4 w-4 text-emerald-600" />
               Current Leading Quote (L1)
             </span>
             <div className="mt-2">
               {detail.current_lowest_bid ? (
                 <div>
-                  <span className="text-3xl font-extrabold text-emerald-600 font-mono-num">
+                  <span className="text-2xl font-bold text-emerald-700 font-mono-num block">
                     ${Number(detail.current_lowest_bid).toLocaleString("en-US", { minimumFractionDigits: 2 })}
                   </span>
                   <p className="text-xs text-slate-500 mt-1">
-                    Leader: <strong className="text-slate-800">{detail.rankings[0]?.company_name}</strong> ({detail.rankings[0]?.carrier_name})
+                    Leader: <strong className="text-slate-900">{detail.rankings[0]?.company_name}</strong> ({detail.rankings[0]?.carrier_name})
                   </p>
                 </div>
               ) : (
-                <span className="text-sm text-slate-400 italic">No quotes submitted yet</span>
+                <span className="text-xs text-slate-400 italic">No quotes submitted yet</span>
               )}
             </div>
           </div>
@@ -229,12 +240,12 @@ export const AuctionDetailPage: React.FC = () => {
       {/* Tabs: Supplier Rankings / Bids / Activity Timeline / Extensions */}
       <div className="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
         {/* Tab Headers */}
-        <div className="flex border-b border-slate-200 bg-slate-50/50 px-4 text-xs font-semibold">
+        <div className="flex border-b border-slate-200 bg-slate-50 px-4 text-xs font-semibold">
           <button
             onClick={() => setActiveTab("bids")}
             className={`py-3 px-4 border-b-2 transition ${
               activeTab === "bids"
-                ? "border-indigo-600 text-indigo-700 bg-white font-bold"
+                ? "border-slate-900 text-slate-900 bg-white font-bold"
                 : "border-transparent text-slate-500 hover:text-slate-800"
             }`}
           >
@@ -244,7 +255,7 @@ export const AuctionDetailPage: React.FC = () => {
             onClick={() => setActiveTab("timeline")}
             className={`py-3 px-4 border-b-2 transition ${
               activeTab === "timeline"
-                ? "border-indigo-600 text-indigo-700 bg-white font-bold"
+                ? "border-slate-900 text-slate-900 bg-white font-bold"
                 : "border-transparent text-slate-500 hover:text-slate-800"
             }`}
           >
@@ -254,7 +265,7 @@ export const AuctionDetailPage: React.FC = () => {
             onClick={() => setActiveTab("extensions")}
             className={`py-3 px-4 border-b-2 transition ${
               activeTab === "extensions"
-                ? "border-indigo-600 text-indigo-700 bg-white font-bold"
+                ? "border-slate-900 text-slate-900 bg-white font-bold"
                 : "border-transparent text-slate-500 hover:text-slate-800"
             }`}
           >
@@ -273,7 +284,7 @@ export const AuctionDetailPage: React.FC = () => {
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
                   <thead>
-                    <tr className="border-b border-slate-200 text-slate-400 uppercase text-[10px] font-bold tracking-wider">
+                    <tr className="border-b border-slate-200 text-slate-500 uppercase text-[10px] font-semibold tracking-wider bg-slate-50/50">
                       <th className="py-2.5 px-3">Rank</th>
                       <th className="py-2.5 px-3">Supplier & Carrier</th>
                       <th className="py-2.5 px-3 font-mono-num text-right">Freight ($)</th>
@@ -287,32 +298,33 @@ export const AuctionDetailPage: React.FC = () => {
                   </thead>
                   <tbody className="divide-y divide-slate-100">
                     {detail.rankings.map((r) => (
-                      <tr key={r.bid_id} className={`hover:bg-slate-50 transition ${r.rank === 1 ? "bg-emerald-50/40" : ""}`}>
+                      <tr key={r.bid_id} className={`hover:bg-slate-50 transition ${r.rank === 1 ? "bg-emerald-50/30" : ""}`}>
                         <td className="py-3 px-3">
                           <span className={`inline-flex items-center px-2 py-0.5 rounded font-mono font-bold text-xs ${
-                            r.rank === 1 ? "bg-emerald-100 text-emerald-800" :
-                            r.rank === 2 ? "bg-blue-100 text-blue-800" :
-                            r.rank === 3 ? "bg-amber-100 text-amber-800" : "bg-slate-100 text-slate-700"
+                            r.rank === 1 ? "bg-emerald-100 text-emerald-800 border border-emerald-200" :
+                            r.rank === 2 ? "bg-blue-50 text-blue-800 border border-blue-200" :
+                            r.rank === 3 ? "bg-amber-50 text-amber-800 border border-amber-200" :
+                            "bg-slate-100 text-slate-700 border border-slate-200"
                           }`}>
                             L{r.rank}
                           </span>
                         </td>
                         <td className="py-3 px-3">
-                          <span className="font-bold text-slate-900 block">{r.company_name}</span>
+                          <span className="font-semibold text-slate-900 block">{r.company_name}</span>
                           <span className="text-[11px] text-slate-500 font-mono">Carrier: {r.carrier_name}</span>
                         </td>
-                        <td className="py-3 px-3 text-right font-mono-num">${Number(r.freight_charges).toFixed(2)}</td>
-                        <td className="py-3 px-3 text-right font-mono-num">${Number(r.origin_charges).toFixed(2)}</td>
-                        <td className="py-3 px-3 text-right font-mono-num">${Number(r.destination_charges).toFixed(2)}</td>
+                        <td className="py-3 px-3 text-right font-mono-num text-slate-600">${Number(r.freight_charges).toFixed(2)}</td>
+                        <td className="py-3 px-3 text-right font-mono-num text-slate-600">${Number(r.origin_charges).toFixed(2)}</td>
+                        <td className="py-3 px-3 text-right font-mono-num text-slate-600">${Number(r.destination_charges).toFixed(2)}</td>
                         <td className="py-3 px-3 text-right font-mono-num">
-                          <span className="font-extrabold text-slate-900 text-sm">
+                          <span className="font-bold text-slate-900 text-sm">
                             ${Number(r.total_quote_amount).toFixed(2)}
                           </span>
                         </td>
-                        <td className="py-3 px-3 text-center font-mono-num">{r.transit_time_days}d</td>
+                        <td className="py-3 px-3 text-center font-mono-num text-slate-700">{r.transit_time_days}d</td>
                         <td className="py-3 px-3 text-slate-600">{r.quote_validity_date}</td>
-                        <td className="py-3 px-3 text-slate-400 font-mono text-[11px]">
-                          {new Date(r.submitted_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                        <td className="py-3 px-3 text-slate-500 font-mono text-[11px]">
+                          {new Date(r.submitted_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}
                         </td>
                       </tr>
                     ))}
@@ -325,21 +337,21 @@ export const AuctionDetailPage: React.FC = () => {
 
         {/* Tab 2: Activity Timeline */}
         {activeTab === "timeline" && (
-          <div className="p-5 space-y-4">
+          <div className="p-5 space-y-3">
             {detail.activities.map((act) => (
               <div key={act.id} className="flex items-start space-x-3 text-xs border-b border-slate-100 pb-3 last:border-0 last:pb-0">
-                <div className={`mt-0.5 h-2.5 w-2.5 rounded-full shrink-0 ${
+                <div className={`mt-1 h-2 w-2 rounded-full shrink-0 ${
                   act.activity_type === "EXTENSION_TRIGGERED" ? "bg-amber-500" :
-                  act.activity_type === "BID_SUBMITTED" ? "bg-emerald-500" : "bg-indigo-500"
+                  act.activity_type === "BID_SUBMITTED" ? "bg-emerald-600" : "bg-slate-400"
                 }`} />
                 <div className="flex-1">
                   <div className="flex justify-between items-baseline">
-                    <span className="font-bold text-slate-800">{act.headline}</span>
+                    <span className="font-semibold text-slate-900">{act.headline}</span>
                     <span className="text-slate-400 font-mono text-[11px]">
-                      {new Date(act.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                      {new Date(act.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}
                     </span>
                   </div>
-                  {act.details && <p className="text-slate-500 mt-1">{act.details}</p>}
+                  {act.details && <p className="text-slate-500 mt-1 leading-relaxed">{act.details}</p>}
                 </div>
               </div>
             ))}
@@ -356,8 +368,8 @@ export const AuctionDetailPage: React.FC = () => {
             ) : (
               <div className="space-y-3">
                 {detail.extensions.map((ext) => (
-                  <div key={ext.id} className="p-3 bg-amber-50/60 border border-amber-200 rounded-lg text-xs space-y-1">
-                    <div className="flex justify-between items-center font-bold text-amber-900">
+                  <div key={ext.id} className="p-3.5 bg-amber-50/50 border border-amber-200 rounded-lg text-xs space-y-1">
+                    <div className="flex justify-between items-center font-bold text-amber-950">
                       <span>Extended by +{ext.extension_minutes} Minutes</span>
                       <span className="font-mono text-slate-500 text-[11px]">
                         Triggered at: {new Date(ext.extended_at).toLocaleTimeString()}
@@ -366,7 +378,7 @@ export const AuctionDetailPage: React.FC = () => {
                     <div className="text-slate-600 font-mono text-[11px]">
                       Previous Close: {new Date(ext.previous_close_time).toLocaleTimeString()} → New Close: {new Date(ext.new_close_time).toLocaleTimeString()}
                     </div>
-                    <p className="text-amber-800 font-medium pt-1">{ext.trigger_reason}</p>
+                    <p className="text-amber-900 font-medium pt-1">{ext.trigger_reason}</p>
                   </div>
                 ))}
               </div>

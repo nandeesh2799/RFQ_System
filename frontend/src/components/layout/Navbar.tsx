@@ -37,9 +37,9 @@ export const Navbar: React.FC = () => {
   const activeUser = users.find((u) => u.email === currentUserEmail);
 
   return (
-    <header className="border-b border-slate-200 bg-white sticky top-0 z-40 shadow-xs">
+    <header className="border-b border-slate-200 bg-white sticky top-0 z-40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16 items-center gap-2">
+        <div className="flex justify-between h-16 items-center gap-3">
           {/* Brand & Mobile Menu Toggle */}
           <div className="flex items-center space-x-2 sm:space-x-3 min-w-0 shrink">
             <button
@@ -50,15 +50,17 @@ export const Navbar: React.FC = () => {
             >
               {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
-            <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-lg bg-indigo-600 flex items-center justify-center text-white shadow-sm shrink-0">
-              <Gavel className="h-4 w-4 sm:h-5 sm:w-5" />
+            <div className="h-9 w-9 rounded-lg bg-slate-900 flex items-center justify-center text-white shrink-0">
+              <Gavel className="h-4 w-4" />
             </div>
             <div className="min-w-0">
-              <Link to="/" className="text-base sm:text-lg font-bold text-slate-900 tracking-tight flex items-center gap-1.5 whitespace-nowrap">
+              <Link to="/" className="text-sm sm:text-base font-bold text-slate-900 tracking-tight flex items-center gap-1.5 whitespace-nowrap">
                 <span>British Auction</span>
-                <span className="text-xs px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-700 font-semibold uppercase tracking-wider">RFQ</span>
+                <span className="text-[10px] px-1.5 py-0.2 rounded bg-slate-100 text-slate-700 font-semibold uppercase tracking-wider border border-slate-200">
+                  RFQ
+                </span>
               </Link>
-              <p className="text-[11px] text-slate-500 hidden sm:block">Reverse Auction Engine</p>
+              <p className="text-[11px] text-slate-500 hidden sm:block">Freight Reverse Bidding Engine</p>
             </div>
           </div>
 
@@ -71,13 +73,13 @@ export const Navbar: React.FC = () => {
                 <Link
                   key={link.to}
                   to={link.to}
-                  className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  className={`flex items-center space-x-2 px-3 py-2 rounded-lg text-xs font-semibold transition-colors ${
                     isActive
-                      ? "bg-slate-100 text-indigo-700 font-semibold"
+                      ? "bg-slate-100 text-slate-900"
                       : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
                   }`}
                 >
-                  <Icon className="h-4 w-4" />
+                  <Icon className="h-4 w-4 text-slate-500" />
                   <span>{link.label}</span>
                 </Link>
               );
@@ -85,15 +87,15 @@ export const Navbar: React.FC = () => {
           </nav>
 
           {/* Demo Persona Switcher */}
-          <div className="flex items-center space-x-2 bg-slate-50 border border-slate-200 rounded-lg px-2 sm:px-3 py-1 sm:py-1.5 shrink-0 max-w-[200px] sm:max-w-none">
+          <div className="flex items-center space-x-2 bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5 shrink-0 max-w-[210px] sm:max-w-none">
             <UserCheck className="h-4 w-4 text-slate-500 shrink-0" />
             <div className="flex flex-col text-left min-w-0">
-              <span className="text-[9px] sm:text-[10px] uppercase font-bold tracking-wider text-slate-400">Acting Persona</span>
+              <span className="text-[9px] uppercase font-bold tracking-wider text-slate-500">Acting Persona</span>
               <select
                 value={currentUserEmail}
                 onChange={handleUserSelect}
                 aria-label="Acting Persona Switcher"
-                className="text-xs font-medium text-slate-800 bg-transparent border-0 p-0 focus:ring-0 cursor-pointer outline-none max-w-[110px] sm:max-w-[180px] md:max-w-none truncate"
+                className="text-xs font-medium text-slate-900 bg-transparent border-0 p-0 focus:ring-0 cursor-pointer outline-none max-w-[120px] sm:max-w-[190px] md:max-w-none truncate"
               >
                 {users.map((u) => (
                   <option key={u.email} value={u.email}>
@@ -103,9 +105,13 @@ export const Navbar: React.FC = () => {
               </select>
             </div>
             {activeUser && (
-              <span className={`hidden sm:inline-flex text-[10px] px-2 py-0.5 rounded-full font-bold shrink-0 ${
-                activeUser.role === "BUYER" ? "bg-amber-100 text-amber-800" : "bg-emerald-100 text-emerald-800"
-              }`}>
+              <span
+                className={`hidden sm:inline-flex text-[10px] px-2 py-0.5 rounded font-semibold shrink-0 border ${
+                  activeUser.role === "BUYER"
+                    ? "bg-amber-50 text-amber-800 border-amber-200"
+                    : "bg-emerald-50 text-emerald-800 border-emerald-200"
+                }`}
+              >
                 {activeUser.role}
               </span>
             )}
@@ -113,9 +119,9 @@ export const Navbar: React.FC = () => {
         </div>
       </div>
 
-      {/* Mobile Drawer / Dropdown */}
+      {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-slate-200 bg-white px-4 pt-2 pb-3 space-y-1 shadow-md">
+        <div className="lg:hidden border-t border-slate-200 bg-white px-4 pt-2 pb-3 space-y-1 shadow-sm">
           {navLinks.map((link) => {
             const Icon = link.icon;
             const isActive = location.pathname === link.to;
@@ -126,7 +132,7 @@ export const Navbar: React.FC = () => {
                 onClick={() => setMobileMenuOpen(false)}
                 className={`flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                   isActive
-                    ? "bg-indigo-50 text-indigo-700 font-semibold"
+                    ? "bg-slate-100 text-slate-900 font-semibold"
                     : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
                 }`}
               >

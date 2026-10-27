@@ -90,11 +90,15 @@ npx playwright test
 | `6. Mobile viewport renders responsive layout without breaking` | Mobile 375x667 (iPhone SE) | Responsive layout, persona switching, no horizontal overflow breakage | **PASSED** |
 | `7. Auction detail page tab navigation displays Activity Timeline and Extensions` | Desktop (Buyer) | Tab navigation between Quotes, Activity Timeline event stream, and Extension audit trail | **PASSED** |
 | `8. Empty search state displays clear empty message` | Desktop (Buyer) | Searching for nonexistent query renders clean empty state message | **PASSED** |
+| `9. Create RFQ form validation displays field errors on invalid input` | Desktop (Buyer) | Form submission with empty title displays validation message and prevents navigation | **PASSED** |
+| `10. Invalid auction detail route displays error state with back navigation` | Desktop (Buyer) | Non-existent RFQ ID (e.g. 99999999) renders friendly error state and "Back to Auctions" button | **PASSED** |
+| `11. Mobile drawer menu navigates between routes properly` | Mobile 375x667 (iPhone SE) | Mobile hamburger button toggles responsive navigation drawer and navigates correctly | **PASSED** |
+| `12. Bid submission modal validates required fields and negative values` | Desktop (Supplier `apex@logistics.com`) | Bid modal validates required carrier name and prevents invalid submissions | **PASSED** |
 
 ---
 
 ## 4. Test Execution Summary
 
-- **Backend Pytest**: **29 passed**, 0 failed in 1.41 seconds.
-- **Frontend Playwright E2E**: **8 passed**, 0 failed in 9.6 seconds.
-- **Total Automated Tests**: **37 passed**, 0 failed (100% pass rate).
+- **Backend Pytest**: **29 passed**, 0 failed in 1.21 seconds.
+- **Frontend Playwright E2E**: **12 passed**, 0 failed in 14.4 seconds.
+- **Total Automated Tests**: **41 passed**, 0 failed (100% pass rate).

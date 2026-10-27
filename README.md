@@ -216,7 +216,7 @@ pytest -v
 - **Adversarial Tests**: Negative quotes, bids past forced close, non-carrier submissions, and decimal overflow.
 - **Concurrency Tests**: Concurrent multi-threaded bid bursts to verify PostgreSQL row-level locks and eliminate race conditions.
 
-### Frontend E2E Coverage (8 Playwright Scenarios)
+### Frontend E2E Coverage (12 Playwright Scenarios)
 ```bash
 cd frontend
 npx playwright test

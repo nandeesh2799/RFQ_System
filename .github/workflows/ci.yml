@@ -11,6 +11,21 @@ jobs:
     name: Backend Test Suite (Python 3.12)
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_USER: rfq_user
+          POSTGRES_PASSWORD: rfq_password
+          POSTGRES_DB: rfq_auction_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -29,6 +44,7 @@ jobs:
       - name: Run Pytest Test Suite
         env:
           PYTHONPATH: backend:.
+          DATABASE_URL: postgresql+psycopg://rfq_user:rfq_password@localhost:5432/rfq_auction_db
         run: |
           pytest backend/tests -v
 
@@ -64,7 +80,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Docker Buildx
-        uses: actions/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v3
 
       - name: Build Production Image
         uses: docker/build-push-action@v5

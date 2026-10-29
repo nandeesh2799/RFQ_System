@@ -1,5 +1,6 @@
 # 🏛️ British Reverse Auction Engine for Freight Logistics RFQ
 
+[![CI Pipeline](https://github.com/nandeesh2799/RFQ_System/actions/workflows/ci.yml/badge.svg)](https://github.com/nandeesh2799/RFQ_System/actions/workflows/ci.yml)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688.svg?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![React](https://img.shields.io/badge/React-19.0-61DAFB.svg?style=flat-square&logo=react&logoColor=black)](https://react.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.8-3178C6.svg?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
